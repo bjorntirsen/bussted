@@ -4,12 +4,46 @@ import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import { fetchBuslineData, fetchBusstopData } from "../utils/APIhelpers";
 
 interface Props {
-    onClickHandler: any
+    isFetchingBuslines: any;
+    isFetchingBusstops: any;
+    setIsFetchingBuslines: any;
+    setIsFetchingBusstops: any;
+    setBuslines: any;
+    setBusstops: any;
 }
 
-export default function Hero({onClickHandler}: Props) {
+export default function Hero({
+    isFetchingBuslines,
+    isFetchingBusstops,
+    setIsFetchingBuslines,
+    setIsFetchingBusstops,
+    setBuslines,
+    setBusstops,
+}: Props) {
+    const fetchBuslines = async () => {
+        setIsFetchingBuslines(true);
+        const lineData = await fetchBuslineData();
+        fetchBusstops();
+        setBuslines(lineData);
+        console.log("🚌buslines", lineData);
+        setIsFetchingBuslines(false);
+    };
+
+    const fetchBusstops = async () => {
+        setIsFetchingBusstops(true);
+        const stopData = await fetchBusstopData();
+        setBuslines(stopData);
+        console.log("🛑busstops", stopData);
+        setIsFetchingBusstops(false);
+    };
+
+    const onClickHandler = () => {
+        fetchBuslines();
+    };
+
     return (
         <Box
             sx={{
@@ -43,7 +77,15 @@ export default function Hero({onClickHandler}: Props) {
                     spacing={2}
                     justifyContent="center"
                 >
-                    <Button variant="contained" onClick={onClickHandler}>Fetch Bus Data</Button>
+                    <Button variant="contained" onClick={onClickHandler}>
+                        Fetch Bus Data
+                    </Button>
+                    {isFetchingBuslines && (
+                        <Typography>Fetching Bus Lines...</Typography>
+                    )}
+                    {isFetchingBusstops && (
+                        <Typography>Fetching Bus Stops...</Typography>
+                    )}
                 </Stack>
             </Container>
         </Box>
