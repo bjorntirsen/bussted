@@ -1,32 +1,29 @@
-import * as React from "react";
+import CssBaseline from "@mui/material/CssBaseline";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import type { NextPage } from "next";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Link from "../src/Link";
-import ProTip from "../src/ProTip";
+import * as React from "react";
+import Footer from "../src/Footer";
+import Hero from "../src/Hero";
+import Main from "../src/Main";
+import NavBar from "../src/NavBar";
+
+const theme = createTheme();
+
+const onClickHandler = () => {
+    console.log("click!");
+};
 
 const Home: NextPage = () => {
     return (
-        <Container maxWidth="lg">
-            <Box
-                sx={{
-                    my: 4,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
-                <Typography variant="h4" component="h1" gutterBottom>
-                    MUI v5 + Next.js with TypeScript example
-                </Typography>
-                <Link href="/about" color="secondary">
-                    Go to the about page
-                </Link>
-                <ProTip />
-            </Box>
-        </Container>
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <NavBar />
+            <main>
+                <Hero onClickHandler={onClickHandler}/>
+                <Main />
+            </main>
+            <Footer />
+        </ThemeProvider>
     );
 };
 
