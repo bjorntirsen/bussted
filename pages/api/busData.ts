@@ -1,22 +1,7 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import busstops from "../../resources/busstops.json";
 import journeyPatterns from "../../resources/journeyPatterns.json";
 
 // Data shapes from API
-// 1. busstops
-interface busstopsAPIObj {
-    ResponseData: {
-        Result: busstopObj[];
-    };
-}
-
-interface busstopObj {
-    StopPointNumber: string;
-    StopPointName: string;
-}
-
-// 2. journeypatterns
 interface journeyPatternsAPIObj {
     ResponseData: {
         Result: busAndStopConnectionObj[];
@@ -26,36 +11,25 @@ interface journeyPatternsAPIObj {
 interface busAndStopConnectionObj {
     LineNumber: string;
     JourneyPatternPointNumber: string;
+    DirectionCode: string;
 }
 
 // My data shapes
-interface processedBusLineObj {
-    lineNumber: string;
-    numberOfStops: Number;
-    stops: string[];
+interface buslinesObj {
+    [key: string]: {
+        numberOfStops: number;
+        stops: stopObj[];
+    };
 }
 
-function createBusstopNameMappingObj(): any {
-    const busstopArray = (busstops as busstopsAPIObj).ResponseData.Result;
-    function callbackFn(previousValue: busstopObj, currentValue: busstopObj) {
-        return {
-            ...previousValue,
-            [currentValue.StopPointNumber]: currentValue.StopPointName,
-        };
-    }
-    return busstopArray.reduce(callbackFn, {} as busstopObj);
+interface stopObj {
+    stopId: string;
+    direction: string;
 }
 
 function reduceBusstopAndLineConnection(
     busAndStopConnectionArray: busAndStopConnectionObj[]
 ) {
-    interface buslinesObj {
-        [key: string]: {
-            numberOfStops: number;
-            stops: string[];
-        };
-    }
-
     function callbackFn(
         accumulator: buslinesObj,
         currentValue: busAndStopConnectionObj
@@ -65,7 +39,12 @@ function reduceBusstopAndLineConnection(
                 ...accumulator,
                 [currentValue.LineNumber]: {
                     numberOfStops: 1,
-                    stops: [currentValue.JourneyPatternPointNumber],
+                    stops: [
+                        {
+                            stopId: currentValue.JourneyPatternPointNumber,
+                            direction: currentValue.DirectionCode,
+                        },
+                    ],
                 },
             };
         }
@@ -76,7 +55,10 @@ function reduceBusstopAndLineConnection(
                     accumulator[currentValue.LineNumber].numberOfStops + 1,
                 stops: [
                     ...accumulator[currentValue.LineNumber].stops,
-                    currentValue.JourneyPatternPointNumber,
+                    {
+                        stopId: currentValue.JourneyPatternPointNumber,
+                        direction: currentValue.DirectionCode,
+                    },
                 ],
             },
         };
@@ -97,14 +79,13 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         (a, b) => b[1].numberOfStops - a[1].numberOfStops
     );
     const topTen = sortedArray.slice(0, 10);
-    const nameMappingObj = createBusstopNameMappingObj();
-    const namedTopTen = topTen.map((element) => {
-        return {
-            ...element,
-            stops: element[1].stops.map((stop) => {
-                return { stopId: stop, stopName: nameMappingObj[stop] };
-            }),
+    const formattedTopTen = topTen.map((busline) => {
+        const formattedBusline = {
+            lineNumber: busline[0],
+            numberOfStops: busline[1].numberOfStops,
+            stops: busline[1].stops,
         };
+        return formattedBusline;
     });
-    res.status(200).json(namedTopTen);
+    res.status(200).json(formattedTopTen);
 }
