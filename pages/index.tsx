@@ -29,7 +29,7 @@ const Home: NextPage = () => {
                     setBuslines={setBuslines}
                     setBusstops={setBusstops}
                 />
-                <Main />
+                <Main buslines={buslines} busstops={busstops}/>
             </main>
             <Footer />
         </ThemeProvider>

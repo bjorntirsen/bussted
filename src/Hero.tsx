@@ -1,9 +1,11 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import { useState } from "react";
 import { fetchBuslineData, fetchBusstopData } from "../utils/APIhelpers";
 
 interface Props {
@@ -23,10 +25,11 @@ export default function Hero({
     setBuslines,
     setBusstops,
 }: Props) {
+    const [loading, setLoading] = useState(false);
+
     const fetchBuslines = async () => {
         setIsFetchingBuslines(true);
         const lineData = await fetchBuslineData();
-        fetchBusstops();
         setBuslines(lineData);
         console.log("🚌buslines", lineData);
         setIsFetchingBuslines(false);
@@ -35,13 +38,16 @@ export default function Hero({
     const fetchBusstops = async () => {
         setIsFetchingBusstops(true);
         const stopData = await fetchBusstopData();
-        setBuslines(stopData);
+        setBusstops(stopData);
         console.log("🛑busstops", stopData);
         setIsFetchingBusstops(false);
     };
 
-    const onClickHandler = () => {
-        fetchBuslines();
+    const onClickHandler = async () => {
+        setLoading(true)
+        await fetchBuslines();
+        fetchBusstops();
+        setLoading(false)
     };
 
     return (
@@ -49,7 +55,7 @@ export default function Hero({
             sx={{
                 bgcolor: "background.paper",
                 pt: 8,
-                pb: 6,
+                pb: 2,
             }}
         >
             <Container maxWidth="sm">
@@ -69,22 +75,29 @@ export default function Hero({
                     paragraph
                 >
                     Hit the button to get the top ten bus lines according to
-                    number of stops!
+                    number of stops
                 </Typography>
                 <Stack
                     sx={{ pt: 4 }}
                     direction="row"
-                    spacing={2}
+                    spacing={1}
                     justifyContent="center"
                 >
-                    <Button variant="contained" onClick={onClickHandler}>
+                    <LoadingButton loading={loading} loadingIndicator="Loading..." variant="contained" onClick={onClickHandler}>
                         Fetch Bus Data
-                    </Button>
+                    </LoadingButton>
+                </Stack>
+                <Stack
+                    sx={{ pt: 4 }}
+                    direction="row"
+                    spacing={1}
+                    justifyContent="center"
+                >
                     {isFetchingBuslines && (
                         <Typography>Fetching Bus Lines...</Typography>
                     )}
                     {isFetchingBusstops && (
-                        <Typography>Fetching Bus Stops...</Typography>
+                        <Typography>Fetching Bus Stop info...</Typography>
                     )}
                 </Stack>
             </Container>
