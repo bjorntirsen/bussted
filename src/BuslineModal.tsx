@@ -4,14 +4,14 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import BusstopList from "./BusstopList";
-import { BusLine } from "./Main";
+import { BusLine } from "../pages";
 
 interface Props {
     busline: BusLine;
-    busstops: any;
+    isFetchingBusstopDetails: boolean;
 }
 
-export default function BuslineModal({ busline, busstops }: Props) {
+export default function BuslineModal({ busline, isFetchingBusstopDetails }: Props) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -59,7 +59,7 @@ export default function BuslineModal({ busline, busstops }: Props) {
                             <DirectionsBusIcon fontSize="large" />
                             {busline.lineNumber} List of busstops
                         </Typography>
-                        {!busstops && (
+                        {isFetchingBusstopDetails && (
                             <Typography>
                                 Busstop names are loading...
                             </Typography>

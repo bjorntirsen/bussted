@@ -28,9 +28,8 @@ export interface BusLine {
 
 const Home: NextPage = () => {
     const [buslines, setBuslines] = useState<null | BusLine[]>(null);
-    const [busstops, setBusstops] = useState(null);
     const [isFetchingBuslines, setIsFetchingBuslines] = useState(false);
-    const [isFetchingBusstops, setIsFetchingBusstops] = useState(false);
+    const [isFetchingBusstopDetails, setIsFetchingBusstopDetails] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const fetchBuslines = async () => {
@@ -42,10 +41,9 @@ const Home: NextPage = () => {
     };
 
     const fetchBusstops = async () => {
-        setIsFetchingBusstops(true);
+        setIsFetchingBusstopDetails(true);
         const stopData = await fetchBusstopData();
-        setBusstops(stopData);
-        setIsFetchingBusstops(false);
+        setIsFetchingBusstopDetails(false);
         return stopData;
     };
 
@@ -75,9 +73,7 @@ const Home: NextPage = () => {
     const onClickHandler = async () => {
         setLoading(true);
         const lineData = await fetchBuslines();
-        console.log("🚌buslines", lineData);
         const stopData = await fetchBusstops();
-        console.log("🛑busstops", stopData);
         addDetailsToBusstops(lineData, stopData);
         setLoading(false);
     };
@@ -89,11 +85,11 @@ const Home: NextPage = () => {
             <main>
                 <Hero
                     isFetchingBuslines={isFetchingBuslines}
-                    isFetchingBusstops={isFetchingBusstops}
+                    isFetchingBusstopDetails={isFetchingBusstopDetails}
                     onClickHandler={onClickHandler}
                     loading={loading}
                 />
-                <Main buslines={buslines} busstops={busstops} />
+                <Main buslines={buslines} isFetchingBusstopDetails={isFetchingBusstopDetails} />
             </main>
             <Footer />
         </ThemeProvider>

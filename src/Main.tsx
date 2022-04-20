@@ -6,10 +6,10 @@ import BuslineCard from "./BuslineCard";
 
 interface Props {
     buslines: null | BusLine[];
-    busstops: any;
+    isFetchingBusstopDetails: boolean;
 }
 
-export default function Main({ buslines, busstops }: Props) {
+export default function Main({ buslines, isFetchingBusstopDetails }: Props) {
     return (
         <Container sx={{ py: 2 }} maxWidth="md">
             <Grid container spacing={4}>
@@ -24,7 +24,7 @@ export default function Main({ buslines, busstops }: Props) {
                         >
                             <BuslineCard
                                 busline={busline}
-                                busstops={busstops}
+                                isFetchingBusstopDetails={isFetchingBusstopDetails}
                             />
                         </Grid>
                     ))}

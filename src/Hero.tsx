@@ -7,14 +7,14 @@ import * as React from "react";
 
 interface Props {
     isFetchingBuslines: boolean;
-    isFetchingBusstops: boolean;
+    isFetchingBusstopDetails: boolean;
     onClickHandler: any;
     loading: boolean;
 }
 
 export default function Hero({
     isFetchingBuslines,
-    isFetchingBusstops,
+    isFetchingBusstopDetails,
     onClickHandler,
     loading,
 }: Props) {
@@ -69,7 +69,7 @@ export default function Hero({
                     {isFetchingBuslines && (
                         <Typography>Fetching Bus Lines...</Typography>
                     )}
-                    {isFetchingBusstops && (
+                    {isFetchingBusstopDetails && (
                         <Typography>
                             Fetching Detailed Bus Stop info...
                         </Typography>
