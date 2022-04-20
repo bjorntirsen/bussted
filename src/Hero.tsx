@@ -97,7 +97,7 @@ export default function Hero({
                         <Typography>Fetching Bus Lines...</Typography>
                     )}
                     {isFetchingBusstops && (
-                        <Typography>Fetching Bus Stop info...</Typography>
+                        <Typography>Fetching Detailed Bus Stop info...</Typography>
                     )}
                 </Stack>
             </Container>
