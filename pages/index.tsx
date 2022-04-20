@@ -29,7 +29,8 @@ export interface BusLine {
 const Home: NextPage = () => {
     const [buslines, setBuslines] = useState<null | BusLine[]>(null);
     const [isFetchingBuslines, setIsFetchingBuslines] = useState(false);
-    const [isFetchingBusstopDetails, setIsFetchingBusstopDetails] = useState(false);
+    const [isFetchingBusstopDetails, setIsFetchingBusstopDetails] =
+        useState(false);
     const [loading, setLoading] = useState(false);
 
     const fetchBuslines = async () => {
@@ -89,7 +90,10 @@ const Home: NextPage = () => {
                     onClickHandler={onClickHandler}
                     loading={loading}
                 />
-                <Main buslines={buslines} isFetchingBusstopDetails={isFetchingBusstopDetails} />
+                <Main
+                    buslines={buslines}
+                    isFetchingBusstopDetails={isFetchingBusstopDetails}
+                />
             </main>
             <Footer />
         </ThemeProvider>

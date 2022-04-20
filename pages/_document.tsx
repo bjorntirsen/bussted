@@ -12,6 +12,10 @@ export default function Document() {
                     rel="stylesheet"
                     href="https://fonts.googleapis.com/icon?family=Material+Icons"
                 />
+                <link
+                    href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
+                    rel="stylesheet"
+                />
             </Head>
             <body>
                 <Main />
