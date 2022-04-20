@@ -1,18 +1,12 @@
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import * as React from "react";
-import { stopObj } from "../pages/api/busData";
+import { BusLine } from "../pages/index";
 import BuslineCard from "./BuslineCard";
 
 interface Props {
-    buslines: any;
+    buslines: null | BusLine[];
     busstops: any;
-}
-
-export interface BusLine {
-    lineNumber: string;
-    numberOfStops: number;
-    stops: stopObj[];
 }
 
 export default function Main({ buslines, busstops }: Props) {
@@ -28,7 +22,10 @@ export default function Main({ buslines, busstops }: Props) {
                             sm={6}
                             md={4}
                         >
-                            <BuslineCard busline={busline} busstops={busstops} />
+                            <BuslineCard
+                                busline={busline}
+                                busstops={busstops}
+                            />
                         </Grid>
                     ))}
             </Grid>

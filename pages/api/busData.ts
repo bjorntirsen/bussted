@@ -22,7 +22,7 @@ interface buslinesObj {
     };
 }
 
-export interface stopObj {
+interface stopObj {
     stopId: string;
     direction: string;
 }

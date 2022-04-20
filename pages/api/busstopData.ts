@@ -16,7 +16,7 @@ interface busstopObj {
 }
 
 // My data shapes
-interface processedBusstopObj {
+export interface processedBusstopObj {
     [stopPointNumber: string]: {
         stopPointName: string;
         locationNorthingCoordinate: string;

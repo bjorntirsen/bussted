@@ -1,55 +1,23 @@
+import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import LoadingButton from '@mui/lab/LoadingButton';
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import { useState } from "react";
-import { fetchBuslineData, fetchBusstopData } from "../utils/APIhelpers";
 
 interface Props {
-    isFetchingBuslines: any;
-    isFetchingBusstops: any;
-    setIsFetchingBuslines: any;
-    setIsFetchingBusstops: any;
-    setBuslines: any;
-    setBusstops: any;
+    isFetchingBuslines: boolean;
+    isFetchingBusstops: boolean;
+    onClickHandler: any;
+    loading: boolean;
 }
 
 export default function Hero({
     isFetchingBuslines,
     isFetchingBusstops,
-    setIsFetchingBuslines,
-    setIsFetchingBusstops,
-    setBuslines,
-    setBusstops,
+    onClickHandler,
+    loading,
 }: Props) {
-    const [loading, setLoading] = useState(false);
-
-    const fetchBuslines = async () => {
-        setIsFetchingBuslines(true);
-        const lineData = await fetchBuslineData();
-        setBuslines(lineData);
-        console.log("🚌buslines", lineData);
-        setIsFetchingBuslines(false);
-    };
-
-    const fetchBusstops = async () => {
-        setIsFetchingBusstops(true);
-        const stopData = await fetchBusstopData();
-        setBusstops(stopData);
-        console.log("🛑busstops", stopData);
-        setIsFetchingBusstops(false);
-    };
-
-    const onClickHandler = async () => {
-        setLoading(true)
-        await fetchBuslines();
-        fetchBusstops();
-        setLoading(false)
-    };
-
     return (
         <Box
             sx={{
@@ -83,7 +51,12 @@ export default function Hero({
                     spacing={1}
                     justifyContent="center"
                 >
-                    <LoadingButton loading={loading} loadingIndicator="Loading..." variant="contained" onClick={onClickHandler}>
+                    <LoadingButton
+                        loading={loading}
+                        loadingIndicator="Loading..."
+                        variant="contained"
+                        onClick={onClickHandler}
+                    >
                         Fetch Bus Data
                     </LoadingButton>
                 </Stack>
@@ -97,7 +70,9 @@ export default function Hero({
                         <Typography>Fetching Bus Lines...</Typography>
                     )}
                     {isFetchingBusstops && (
-                        <Typography>Fetching Detailed Bus Stop info...</Typography>
+                        <Typography>
+                            Fetching Detailed Bus Stop info...
+                        </Typography>
                     )}
                 </Stack>
             </Container>
