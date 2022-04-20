@@ -18,21 +18,41 @@ export default function BusstopList({ busline, direction }: Props) {
             </Typography>
             <Box sx={{ backgroundColor: "grey" }}>
                 <List dense>
-                    {busline.stops.map((stop) => {
-                        if (stop.direction === direction) {
-                            return (
-                                <ListItem key={stop.stopId}>
-                                    <ListItemText
-                                        primary={`Id: ${stop.stopId}`}
-                                        secondary={
-                                            stop.stopPointName &&
-                                            stop.stopPointName
-                                        }
-                                    />
-                                </ListItem>
-                            );
-                        }
-                    })}
+                    {direction === "1" &&
+                        busline.stops.map((stop) => {
+                            if (stop.direction === "1") {
+                                return (
+                                    <ListItem key={stop.stopId}>
+                                        <ListItemText
+                                            primary={`Id: ${stop.stopId}`}
+                                            secondary={
+                                                stop.stopPointName &&
+                                                stop.stopPointName
+                                            }
+                                        />
+                                    </ListItem>
+                                );
+                            }
+                        })}
+                    {direction === "2" &&
+                        busline.stops
+                            .slice(0)
+                            .reverse()
+                            .map((stop) => {
+                                if (stop.direction === "2") {
+                                    return (
+                                        <ListItem key={stop.stopId}>
+                                            <ListItemText
+                                                primary={`Id: ${stop.stopId}`}
+                                                secondary={
+                                                    stop.stopPointName &&
+                                                    stop.stopPointName
+                                                }
+                                            />
+                                        </ListItem>
+                                    );
+                                }
+                            })}
                 </List>
             </Box>
         </Grid>
