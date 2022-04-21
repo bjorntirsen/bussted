@@ -32,6 +32,7 @@ const Home: NextPage = () => {
     const [isFetchingBusstopDetails, setIsFetchingBusstopDetails] =
         useState(false);
     const [loading, setLoading] = useState(false);
+    const [hideFetchButton, setHideFetchButton] = useState(false);
 
     const fetchBuslines = async () => {
         setIsFetchingBuslines(true);
@@ -54,12 +55,15 @@ const Home: NextPage = () => {
     ) => {
         const newBuslinesState = lineData.map((busline) => {
             const updatedStopArray = busline.stops.map((busstop) => {
-                const correspondingDataObj = stopData.find(busstopObj => busstop.stopId === busstopObj.StopPointNumber);
+                const correspondingDataObj = stopData.find(
+                    (busstopObj) =>
+                        busstop.stopId === busstopObj.StopPointNumber
+                );
                 const {
                     StopPointName,
                     LocationNorthingCoordinate,
                     LocationEastingCoordinate,
-                } = correspondingDataObj as busstopObj
+                } = correspondingDataObj as busstopObj;
                 return {
                     ...busstop,
                     stopPointName: StopPointName,
@@ -78,6 +82,7 @@ const Home: NextPage = () => {
         const stopData = await fetchBusstops();
         addDetailsToBusstops(lineData, stopData);
         setLoading(false);
+        setHideFetchButton(true);
     };
 
     return (
@@ -90,6 +95,7 @@ const Home: NextPage = () => {
                     isFetchingBusstopDetails={isFetchingBusstopDetails}
                     onClickHandler={onClickHandler}
                     loading={loading}
+                    hideFetchButton={hideFetchButton}
                 />
                 <Main
                     buslines={buslines}

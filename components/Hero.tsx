@@ -10,6 +10,7 @@ interface Props {
     isFetchingBusstopDetails: boolean;
     onClickHandler: any;
     loading: boolean;
+    hideFetchButton: boolean;
 }
 
 export default function Hero({
@@ -17,6 +18,7 @@ export default function Hero({
     isFetchingBusstopDetails,
     onClickHandler,
     loading,
+    hideFetchButton,
 }: Props) {
     return (
         <Box
@@ -51,14 +53,16 @@ export default function Hero({
                     spacing={1}
                     justifyContent="center"
                 >
-                    <LoadingButton
-                        loading={loading}
-                        loadingIndicator="Loading..."
-                        variant="contained"
-                        onClick={onClickHandler}
-                    >
-                        Fetch Bus Data
-                    </LoadingButton>
+                    {!hideFetchButton && (
+                        <LoadingButton
+                            loading={loading}
+                            loadingIndicator="Loading..."
+                            variant="contained"
+                            onClick={onClickHandler}
+                        >
+                            Fetch Bus Data
+                        </LoadingButton>
+                    )}
                 </Stack>
                 <Stack
                     sx={{ pt: 4 }}
