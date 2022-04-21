@@ -3,10 +3,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import type { NextPage } from "next";
 import * as React from "react";
 import { useState } from "react";
-import Footer from "../src/Footer";
-import Hero from "../src/Hero";
-import Main from "../src/Main";
-import NavBar from "../src/NavBar";
+import Footer from "../components/Footer";
+import Hero from "../components/Hero";
+import Main from "../components/Main";
+import NavBar from "../components/NavBar";
 import { fetchBuslineData, fetchBusstopData } from "../utils/APIhelpers";
 import { processedBusstopObj } from "./api/busstopData";
 
