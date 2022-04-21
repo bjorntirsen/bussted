@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import journeyPatterns from "../../resources/journeyPatterns.json";
 
 // Data shapes from API
 interface journeyPatternsAPIObj {
@@ -15,7 +14,7 @@ interface busAndStopConnectionObj {
 }
 
 // My data shapes
-interface buslinesObj {
+interface processedBuslinesObj {
     [key: string]: {
         numberOfStops: number;
         stops: stopObj[];
@@ -27,11 +26,17 @@ interface stopObj {
     direction: string;
 }
 
+interface processedTopTenBuslineObj {
+    linenumber: string;
+    numberOfStops: number;
+    stops: stopObj[];
+}
+
 function reduceBusstopAndLineConnection(
     busAndStopConnectionArray: busAndStopConnectionObj[]
 ) {
     function callbackFn(
-        accumulator: buslinesObj,
+        accumulator: processedBuslinesObj,
         currentValue: busAndStopConnectionObj
     ) {
         if (!accumulator[currentValue.LineNumber]) {
@@ -67,10 +72,13 @@ function reduceBusstopAndLineConnection(
     return busAndStopConnectionArray.reduce(callbackFn, {});
 }
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-    const busAndStopConnectionArray: busAndStopConnectionObj[] = (
-        journeyPatterns as journeyPatternsAPIObj
-    ).ResponseData.Result;
+async function fetchAndProcessBuslines(): Promise<processedTopTenBuslineObj> {
+    const response = await fetch(
+        `https://api.sl.se/api2/LineData.json?model=jour&DefaultTransportModeCode=BUS&key=${process.env.API_KEY}`
+    );
+    const journeyPatterns = await response.json();
+    const busAndStopConnectionArray = (journeyPatterns as journeyPatternsAPIObj)
+        .ResponseData.Result;
     const processedObj = reduceBusstopAndLineConnection(
         busAndStopConnectionArray
     );
@@ -87,5 +95,13 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         };
         return formattedBusline;
     });
-    res.status(200).json(formattedTopTen);
+    return formattedTopTen as unknown as processedTopTenBuslineObj;
+}
+
+export default async function handler(
+    req: NextApiRequest,
+    res: NextApiResponse
+) {
+    const processedBuslines = await fetchAndProcessBuslines();
+    res.status(200).json(processedBuslines);
 }

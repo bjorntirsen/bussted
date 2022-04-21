@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import busstops from "../../resources/busstops.json";
 
 // Data shapes from API
 interface busstopsAPIObj {
@@ -24,23 +23,34 @@ export interface processedBusstopObj {
     };
 }
 
-function createBusstopsObj(): processedBusstopObj {
+async function fetchAndProcessBusstops(): Promise<processedBusstopObj> {
+    const response = await fetch(
+        `https://api.sl.se/api2/LineData.json?model=stop&key=${process.env.API_KEY}`
+    );
+    const busstops = await response.json();
     const busstopArray = (busstops as busstopsAPIObj).ResponseData.Result;
-    function callbackFn(accumulator: processedBusstopObj, currentValue: busstopObj) {
+    function callbackFn(
+        accumulator: processedBusstopObj,
+        currentValue: busstopObj
+    ) {
         return {
             ...accumulator,
             [currentValue.StopPointNumber]: {
                 stopPointName: currentValue.StopPointName,
-                locationNorthingCoordinate: currentValue.LocationNorthingCoordinate,
-                locationEastingCoordinate: currentValue.LocationEastingCoordinate,
+                locationNorthingCoordinate:
+                    currentValue.LocationNorthingCoordinate,
+                locationEastingCoordinate:
+                    currentValue.LocationEastingCoordinate,
             },
         };
     }
     return busstopArray.reduce(callbackFn, {});
 }
 
-
-export default function handler(req: NextApiRequest, res: NextApiResponse<processedBusstopObj>) {
-    const processedBusstops = createBusstopsObj()
+export default async function handler(
+    req: NextApiRequest,
+    res: NextApiResponse<processedBusstopObj>
+) {
+    const processedBusstops = await fetchAndProcessBusstops();
     res.status(200).json(processedBusstops);
 }
