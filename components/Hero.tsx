@@ -71,7 +71,7 @@ export default function Hero({
                     )}
                     {isFetchingBusstopDetails && (
                         <Typography>
-                            Fetching Detailed Bus Stop info... (This takes about 30 seconds)
+                            Fetching Detailed Bus Stop info...
                         </Typography>
                     )}
                 </Stack>

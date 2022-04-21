@@ -65,7 +65,7 @@ export default function BuslineModal({
                         </Typography>
                         {isFetchingBusstopDetails && (
                             <Typography>
-                                Busstop names and locations are loading, please wait. This usually takes around 30 seconds...
+                                Busstop names and locations are loading, please wait...
                             </Typography>
                         )}
                         {!isFetchingBusstopDetails && (

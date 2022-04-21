@@ -8,12 +8,12 @@ import Hero from "../components/Hero";
 import Main from "../components/Main";
 import NavBar from "../components/NavBar";
 import { fetchBuslineData, fetchBusstopData } from "../utils/APIhelpers";
-import { processedBusstopObj } from "./api/busstopData";
+import { busstopObj } from "./api/busstopData";
 
 const theme = createTheme();
 
 export interface stopObj {
-    stopId: number;
+    stopId: string;
     direction: string;
     stopPointName?: string;
     locationNorthingCoordinate?: string;
@@ -50,20 +50,21 @@ const Home: NextPage = () => {
 
     const addDetailsToBusstops = (
         lineData: BusLine[],
-        stopData: processedBusstopObj
+        stopData: busstopObj[]
     ) => {
         const newBuslinesState = lineData.map((busline) => {
             const updatedStopArray = busline.stops.map((busstop) => {
+                const correspondingDataObj = stopData.find(busstopObj => busstop.stopId === busstopObj.StopPointNumber);
                 const {
-                    stopPointName,
-                    locationNorthingCoordinate,
-                    locationEastingCoordinate,
-                } = stopData[busstop.stopId];
+                    StopPointName,
+                    LocationNorthingCoordinate,
+                    LocationEastingCoordinate,
+                } = correspondingDataObj as busstopObj
                 return {
                     ...busstop,
-                    stopPointName,
-                    locationNorthingCoordinate,
-                    locationEastingCoordinate,
+                    stopPointName: StopPointName,
+                    locationNorthingCoordinate: LocationNorthingCoordinate,
+                    locationEastingCoordinate: LocationEastingCoordinate,
                 };
             });
             return { ...busline, stops: updatedStopArray };
