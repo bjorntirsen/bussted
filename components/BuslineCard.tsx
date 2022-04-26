@@ -3,15 +3,14 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import { processedTopTenBuslineObj } from "../pages/api/topTenBusLines";
 import BuslineModal from "./BuslineModal";
-import { BusLine } from "../pages";
 
 interface Props {
-    busline: BusLine;
-    isFetchingBusstopDetails: boolean;
+    busline: processedTopTenBuslineObj;
 }
 
-export default function BuslineCard({ busline, isFetchingBusstopDetails }: Props) {
+export default function BuslineCard({ busline }: Props) {
     return (
         <Card
             sx={{
@@ -35,7 +34,7 @@ export default function BuslineCard({ busline, isFetchingBusstopDetails }: Props
                 </Typography>
             </CardContent>
             <CardActions>
-                <BuslineModal busline={busline} isFetchingBusstopDetails={isFetchingBusstopDetails} />
+                <BuslineModal busline={busline} />
             </CardActions>
         </Card>
     );

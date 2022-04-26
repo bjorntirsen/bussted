@@ -1,12 +1,12 @@
 import { Box } from "@mui/material";
 import mapboxgl from "mapbox-gl";
 import { useEffect } from "react";
-import { BusLine } from "../pages";
+import { processedTopTenBuslineObj } from "../pages/api/topTenBusLines";
 
 mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
 
 interface Props {
-    busline: BusLine;
+    busline: processedTopTenBuslineObj;
 }
 
 export default function MapBox({ busline }: Props) {

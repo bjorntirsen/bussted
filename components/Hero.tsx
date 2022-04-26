@@ -6,18 +6,14 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 
 interface Props {
-    isFetchingBuslines: boolean;
-    isFetchingBusstopDetails: boolean;
+    isFetchingBusData: boolean;
     onClickHandler: any;
-    loading: boolean;
     hideFetchButton: boolean;
 }
 
 export default function Hero({
-    isFetchingBuslines,
-    isFetchingBusstopDetails,
+    isFetchingBusData,
     onClickHandler,
-    loading,
     hideFetchButton,
 }: Props) {
     return (
@@ -56,7 +52,7 @@ export default function Hero({
                         justifyContent="center"
                     >
                         <LoadingButton
-                            loading={loading}
+                            loading={isFetchingBusData}
                             loadingIndicator="Loading..."
                             variant="contained"
                             onClick={onClickHandler}
@@ -72,13 +68,8 @@ export default function Hero({
                         spacing={1}
                         justifyContent="center"
                     >
-                        {isFetchingBuslines && (
-                            <Typography>Fetching Bus Lines...</Typography>
-                        )}
-                        {isFetchingBusstopDetails && (
-                            <Typography>
-                                Fetching Detailed Bus Stop info...
-                            </Typography>
+                        {isFetchingBusData && (
+                            <Typography>Fetching Bus Data...</Typography>
                         )}
                     </Stack>
                 )}

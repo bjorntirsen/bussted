@@ -3,19 +3,15 @@ import { Backdrop, Box, Fade, Grid, Modal } from "@mui/material";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import { BusLine } from "../pages";
+import { processedTopTenBuslineObj } from "../pages/api/topTenBusLines";
 import BusstopList from "./BusstopList";
 import MapBox from "./MapBox";
 
 interface Props {
-    busline: BusLine;
-    isFetchingBusstopDetails: boolean;
+    busline: processedTopTenBuslineObj;
 }
 
-export default function BuslineModal({
-    busline,
-    isFetchingBusstopDetails,
-}: Props) {
+export default function BuslineModal({ busline }: Props) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -63,14 +59,7 @@ export default function BuslineModal({
                             <DirectionsBusIcon fontSize="large" />
                             {busline.lineNumber} List of busstops
                         </Typography>
-                        {isFetchingBusstopDetails && (
-                            <Typography>
-                                Busstop names and locations are loading, please wait...
-                            </Typography>
-                        )}
-                        {!isFetchingBusstopDetails && (
-                            <MapBox busline={busline} />
-                        )}
+                        <MapBox busline={busline} />
                         <Grid container spacing={2}>
                             <BusstopList busline={busline} direction="1" />
                             <BusstopList busline={busline} direction="2" />

@@ -1,9 +1,9 @@
 import { Box, Grid, List, ListItem, ListItemText } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { BusLine } from "../pages";
+import { processedTopTenBuslineObj } from "../pages/api/topTenBusLines";
 
 interface Props {
-    busline: BusLine;
+    busline: processedTopTenBuslineObj;
     direction: string;
 }
 
