@@ -89,7 +89,11 @@ const Home: NextPage = () => {
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <NavBar />
-            <main>
+            <main
+                style={{
+                    flexGrow: 1,
+                }}
+            >
                 <Hero
                     isFetchingBuslines={isFetchingBuslines}
                     isFetchingBusstopDetails={isFetchingBusstopDetails}

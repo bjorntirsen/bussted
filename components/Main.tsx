@@ -24,7 +24,9 @@ export default function Main({ buslines, isFetchingBusstopDetails }: Props) {
                         >
                             <BuslineCard
                                 busline={busline}
-                                isFetchingBusstopDetails={isFetchingBusstopDetails}
+                                isFetchingBusstopDetails={
+                                    isFetchingBusstopDetails
+                                }
                             />
                         </Grid>
                     ))}
