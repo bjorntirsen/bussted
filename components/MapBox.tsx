@@ -44,10 +44,6 @@ export default function MapBox({ busline }: Props) {
         });
 
         map.fitBounds(bounds);
-
-        new mapboxgl.Marker()
-            .setLngLat([18.9864788639052, 59.8783215300884])
-            .addTo(map);
     }, [busline.stops]);
 
     return (
