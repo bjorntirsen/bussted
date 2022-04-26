@@ -44,16 +44,17 @@ export default function Hero({
                     color="text.secondary"
                     paragraph
                 >
-                    Hit the button to get the top ten bus lines according to
-                    number of stops
+                    {!hideFetchButton
+                        ? "Hit the button to get the top ten bus lines according to number of stops"
+                        : "The top ten bus lines according to number of stops:"}
                 </Typography>
-                <Stack
-                    sx={{ pt: 4 }}
-                    direction="row"
-                    spacing={1}
-                    justifyContent="center"
-                >
-                    {!hideFetchButton && (
+                {!hideFetchButton && (
+                    <Stack
+                        sx={{ pt: 4 }}
+                        direction="row"
+                        spacing={1}
+                        justifyContent="center"
+                    >
                         <LoadingButton
                             loading={loading}
                             loadingIndicator="Loading..."
@@ -62,23 +63,25 @@ export default function Hero({
                         >
                             Fetch Bus Data
                         </LoadingButton>
-                    )}
-                </Stack>
-                <Stack
-                    sx={{ pt: 4 }}
-                    direction="row"
-                    spacing={1}
-                    justifyContent="center"
-                >
-                    {isFetchingBuslines && (
-                        <Typography>Fetching Bus Lines...</Typography>
-                    )}
-                    {isFetchingBusstopDetails && (
-                        <Typography>
-                            Fetching Detailed Bus Stop info...
-                        </Typography>
-                    )}
-                </Stack>
+                    </Stack>
+                )}
+                {!hideFetchButton && (
+                    <Stack
+                        sx={{ pt: 4 }}
+                        direction="row"
+                        spacing={1}
+                        justifyContent="center"
+                    >
+                        {isFetchingBuslines && (
+                            <Typography>Fetching Bus Lines...</Typography>
+                        )}
+                        {isFetchingBusstopDetails && (
+                            <Typography>
+                                Fetching Detailed Bus Stop info...
+                            </Typography>
+                        )}
+                    </Stack>
+                )}
             </Container>
         </Box>
     );
